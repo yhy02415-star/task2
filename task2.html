@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Academic Student Portal</title>
+    <!-- خط تجوال الاحترافي -->
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: 'Tajawal', sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* خلفية متدرجة حديثة ومتحركة */
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f766e 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* دوائر جمالية متوهجة في الخلفية */
+        body::before, body::after {
+            content: '';
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            filter: blur(90px);
+            z-index: 0;
+        }
+        body::before { background: rgba(56, 189, 248, 0.25); top: 10%; left: 15%; }
+        body::after { background: rgba(20, 184, 166, 0.25); bottom: 10%; right: 15%; }
+
+        /* كارت زجاجي Glassmorphism */
+        .glass-card {
+            position: relative;
+            z-index: 1;
+            background: rgba(255, 255, 255, 0.07);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            border-radius: 24px;
+            padding: 40px;
+            width: 100%;
+            max-width: 520px;
+            text-align: center;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+            color: #ffffff;
+        }
+
+        .glass-card h1 {
+            font-size: 2rem;
+            font-weight: 800;
+            margin-bottom: 8px;
+            background: linear-gradient(to right, #38bdf8, #2dd4bf);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .glass-card p {
+            color: #94a3b8;
+            font-size: 0.95rem;
+            margin-bottom: 25px;
+        }
+
+        /* شارة الحالة */
+        .status-pill {
+            display: inline-block;
+            background: rgba(45, 212, 191, 0.15);
+            border: 1px solid rgba(45, 212, 191, 0.3);
+            color: #2dd4bf;
+            padding: 8px 20px;
+            border-radius: 30px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            margin-bottom: 25px;
+        }
+
+        /* صندوق التعليمات */
+        .info-box {
+            background: rgba(15, 23, 42, 0.5);
+            border: 1px dashed rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            padding: 15px;
+            font-size: 0.85rem;
+            color: #cbd5e1;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+
+        /* زر تشغيل الكونسول التفاعلي */
+        .btn-action {
+            background: linear-gradient(135deg, #0284c7 0%, #0d9488 100%);
+            color: #ffffff;
+            border: none;
+            padding: 16px 32px;
+            font-size: 1rem;
+            font-weight: 700;
+            border-radius: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 20px rgba(2, 132, 199, 0.3);
+            width: 100%;
+        }
+
+        .btn-action:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 25px rgba(2, 132, 199, 0.5);
+            background: linear-gradient(135deg, #38bdf8 0%, #14b8a6 100%);
+        }
+
+        .btn-action:active {
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="glass-card">
+        <h1>Academic Student System</h1>
+        <p>نظام إدارة وتحليل نتائج الطلاب المتقدم</p>
+
+        <div class="status-pill">
+            System Initialized Successfully! ✨
+        </div>
+
+        <div class="info-box">
+            اضغط على الزر بالأسفل لتشغيل المحرك الأكاديمي وطباعة التقارير والجداول الملونة مباشرة داخل الـ <b>Developer Console (F12)</b>.
+        </div>
+
+        <button class="btn-action" onclick="runStudentSystem()">
+            📊 عرض نتائج الطلاب في الكونسول
+        </button>
+    </div>
+
+    <script>
+        // 1. كلاس الطالب (OOP Class)
+        class Student {
+            constructor(id, name, grades, attendance) {
+                this.id = id;
+                this.name = name;
+                this.grades = grades;
+                this.attendance = attendance;
+            }
+
+            calculateAverage() {
+                if (!this.grades || this.grades.length === 0) return 0;
+                const sum = this.grades.reduce((total, grade) => total + grade, 0);
+                return Number((sum / this.grades.length).toFixed(2));
+            }
+
+            getGradeLetter(avg) {
+                if (avg >= 90) return 'A';
+                if (avg >= 80) return 'B';
+                if (avg >= 70) return 'C';
+                if (avg >= 60) return 'D';
+                if (avg >= 50) return 'E';
+                return 'F';
+            }
+
+            getFinalStatus() {
+                const avg = this.calculateAverage();
+                return (avg >= 50 && this.attendance >= 75) ? "ناجح" : "يحتاج مراجعة";
+            }
+        }
+
+        // 2. مصفوفة الطلاب
+        const studentsList = [
+            new Student(101, "أحمد محمد", [85, 90, 88], 92),
+            new Student(102, "سارة خالد", [42, 45, 46], 80),
+            new Student(103, "محمود عمر", [30, 35, 40], 60),
+            new Student(104, "فاطمة علي", [95, 92, 98], 95)
+        ];
+
+        // 3. دالة تشغيل النظام عند ضغط الزر
+        function runStudentSystem() {
+            console.clear(); // مسح الشاشة لتنظيم المخرجات
+
+            console.log("%c==================================================", "color: #38bdf8; font-weight: bold;");
+            console.log("%c     📊 جدول التقرير العام لأداء الطلاب بالجامعة     ", "color: #2dd4bf; font-size: 14px; font-weight: bold;");
+            console.log("%c==================================================", "color: #38bdf8; font-weight: bold;");
+
+            // أ. تحويل التقرير العام إلى جدول باستخدام console.table (بدل العرض القديم)
+            const generalReportTable = studentsList.map(student => {
+                const avg = student.calculateAverage();
+                return {
+                    "رقم الجلوس": student.id,
+                    "اسم الطالب": student.name,
+                    "الدرجات": `[${student.grades.join(", ")}]`,
+                    "المتوسط": avg + "%",
+                    "التقدير": student.getGradeLetter(avg),
+                    "نسبة الحضور": student.attendance + "%",
+                    "النتيجة": student.getFinalStatus()
+                };
+            });
+
+            console.table(generalReportTable);
+
+            // ب. لجنة الرأفة باستخدام (Filter, Map, Reduce)
+            console.log("\n%c==================================================", "color: #f59e0b; font-weight: bold;");
+            console.log("%c          🛡️ جدول لجنة الرأفة للطلاب المتعثرين       ", "color: #f59e0b; font-size: 13px; font-weight: bold;");
+            console.log("%c==================================================", "color: #f59e0b; font-weight: bold;");
+
+            const strugglingStudents = studentsList.filter(student => {
+                const avg = student.calculateAverage();
+                return avg >= 40 && avg < 50;
+            });
+
+            const bolsteredStudents = strugglingStudents.map(student => {
+                const oldAvg = student.calculateAverage();
+                const newAvg = Number((oldAvg + 5).toFixed(2));
+                return {
+                    "رقم الجلوس": student.id,
+                    "اسم الطالب": student.name,
+                    "المتوسط القديم": oldAvg + "%",
+                    "الرأفة": "+5",
+                    "المتوسط الجديد": newAvg + "%",
+                    "الحالة": newAvg >= 50 ? "ناجح بالرأفة" : "يحتاج مراجعة"
+                };
+            });
+
+            // طباعة جدول لجنة الرأفة
+            console.table(bolsteredStudents);
+
+            // ج. شريط النجاح النهائي
+            console.log("%c\n SYSTEM EXECUTED SUCCESSFULLY! 🎉 ", "background: #0284c7; color: white; font-size: 12px; font-weight: bold; padding: 5px 10px; border-radius: 5px;");
+            
+            alert("تم تنفيذ الكود وتوليد الجداول بنجاح! افتح الـ Console (F12) لمشاهدة التفاصيل.");
+        }
+    </script>
+</body>
+</html>
